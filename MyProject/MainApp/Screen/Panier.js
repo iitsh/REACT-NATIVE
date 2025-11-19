@@ -1,5 +1,6 @@
 
 import { View, Text, FlatList, Pressable } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import styles from '../Style/style';
 
 const Panier = ({ navigation, panier, setPanier }) => {
@@ -7,7 +8,12 @@ const Panier = ({ navigation, panier, setPanier }) => {
 console.log (panier)
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>🛒 Mon Panier</Text>
+      <View style={styles.header}>
+        <Pressable onPress={() => navigation.goBack()} style={{ padding: 8 }}>
+          <Ionicons name="arrow-back" size={24} color="black" />
+        </Pressable>
+        <Text style={[styles.title, { marginLeft: 8 }]}>🛒 Mon Panier</Text>
+      </View>
       <Pressable 
         style={{
           backgroundColor: 'red',
@@ -24,9 +30,9 @@ console.log (panier)
       </Pressable>
       <FlatList
         data={panier}
-        keyExtractor={(item, index) => item.id + '-' + index}
+        keyExtractor={(item, index) => String(item.id ?? index)}
         renderItem={({ item }) => (
-          <Text style={styles.cartItem}>• {item.name} - {item.prix}</Text>
+          <Text style={styles.cartItem}>• {item.nom} - {item.prix}- {item.stock}</Text>
         )}
         contentContainerStyle={styles.list}
       />
