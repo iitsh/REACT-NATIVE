@@ -5,7 +5,7 @@ export default StyleSheet.create({
     backgroundColor: '#f5f5f5',
   },
   
-  scrollContent: {
+  scrollViewContent: {
     padding: 20,
     paddingBottom: 40,
     flexGrow: 1,
@@ -54,7 +54,7 @@ export default StyleSheet.create({
     marginLeft: 5,
   },
   bouton: {
-    backgroundColor: '#3498db',
+    backgroundColor: 'darkgreen',
     height: 50,
     borderRadius: 8,
     justifyContent: 'center',

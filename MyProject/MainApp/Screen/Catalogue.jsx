@@ -1,6 +1,6 @@
 import { SafeAreaView} from 'react-native-safe-area-context';
 import {Text, FlatList, TouchableOpacity, TextInput} from 'react-native';
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect, useCallback, useMemo } from 'react';
 import styles from '../Style/style';
 import { produits } from '../Data/Data';
 import Articles from '../Composant/Article';
@@ -13,9 +13,9 @@ const Catalogue = ({navigation, panier, setPanier}) => {
   const [erreur, setErreur] = useState(null);
   const [recherche, setRecherche] = useState('');
 
-  const ajouterAuPanier = (produit) => {
+  const ajouterAuPanier = useCallback((produit) => {
     setPanier((prev) => [...prev, produit]);
-  };
+  }, [setPanier]);
 
   useEffect (() =>{
         const chargerProduits = async () => {
@@ -37,9 +37,11 @@ const Catalogue = ({navigation, panier, setPanier}) => {
         chargerProduits();
     }, []);
     if (erreur) return <Text style={styles.erreur}>Erreur : {erreur}</Text>;
-        const produitsFiltres = produits.filter(p =>
-         p.nom.toLowerCase().includes(recherche.toLowerCase())
-            );
+        const produitsFiltres = useMemo(() => {
+        return produits.filter(p =>
+            p.nom.toLowerCase().includes(recherche.toLowerCase())
+        );
+    }, [produits, recherche]);
   return (
     <SafeAreaView style={styles.container}>
       <View style={[styles.header]}>
@@ -55,7 +57,7 @@ const Catalogue = ({navigation, panier, setPanier}) => {
 
       <FlatList
         data={produitsFiltres}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item, index) => String(item.id || item._id || index)}
         renderItem={({ item }) => (
           <Articles item={item} onAddToCart={() => ajouterAuPanier(item)} />
         )}

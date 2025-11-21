@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import styles from '../Style/authStyles';
-import { View, Text, TextInput, TouchableOpacity, Alert, Pressable } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Alert, Pressable, ScrollView } from 'react-native';
 import { initDB } from "../Database/initdb";
 import { InsertUser } from "../Database/Task";
 
@@ -40,6 +40,22 @@ export const Inscription = ({navigation}) => {
     };
 
     setupDB();
+  }, []);
+
+  // Ensure database is initialized before allowing inscription
+  const [dbInitialized, setDbInitialized] = useState(false);
+
+  useEffect(() => {
+    const initializeAndSetDb = async () => {
+      try {
+        await initDB();
+        setDbInitialized(true);
+      } catch (error) {
+        console.error("Failed to initialize database:", error);
+        setDbInitialized(false);
+      }
+    };
+    initializeAndSetDb();
   }, []);
 
   // Vérification en temps réel de la correspondance des mots de passe
@@ -108,6 +124,10 @@ export const Inscription = ({navigation}) => {
   };
 
   const handleInscription = async () => {
+    if (!dbInitialized) {
+      Alert.alert('Erreur', 'La base de données n\'est pas initialisée. Veuillez réessayer plus tard.');
+      return;
+    }
     if (validerFormulaire()) {
       try {
         await InsertUser(
@@ -146,7 +166,8 @@ export const Inscription = ({navigation}) => {
     
 
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.scrollViewContent}>
+      <View style={styles.container}>
       <View style={styles.champContainer}>
         <Text style={{fontWeight:'bold', fontSize:40, marginBottom:10}}>Inscription</Text>
         <Text style={{fontSize:20, marginBottom:10}}>Créez votre compte</Text>
@@ -233,10 +254,11 @@ export const Inscription = ({navigation}) => {
       
       <View>
         <Pressable onPress={() => navigation.navigate('Connexion')}>
-          <Text style={{color:'blue', textAlign:'center', marginTop:10}}>Déjà un compte ? Connectez-vous</Text>
+          <Text style={{color:'green', textAlign:'center', marginTop:10}}>Déjà un compte ? Connectez-vous</Text>
         </Pressable>
       </View>
     </View>
+    </ScrollView>
   );
 }
 

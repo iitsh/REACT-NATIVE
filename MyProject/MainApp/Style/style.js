@@ -19,7 +19,7 @@ export default StyleSheet.create({
   },
   articleCard: {
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     marginBottom: 18,
     backgroundColor: '#2f6f63',
     borderRadius: 28,
@@ -75,6 +75,7 @@ export default StyleSheet.create({
     width: '90%',
   },
   articleButton: {
+    marginTop: 8,
     alignSelf: 'center',
     backgroundColor: '#ffffff',
     paddingVertical: 8,

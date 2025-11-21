@@ -82,7 +82,7 @@ const Connexion = ({ navigation }) => {
                 if (user) {
                     Alert.alert('Connexion réussie', `Bienvenue !`);
                     setUser(user);
-                    navigation.replace('Catalogue');
+                    navigation.navigate('Catalogue');
                 } else {
                     Alert.alert('Erreur', 'Email ou mot de passe incorrect.');
                 }
@@ -120,8 +120,8 @@ const Connexion = ({ navigation }) => {
                 </View>
 
                 <View>
-                    <Pressable onPress={() => navigation.replace('Inscription')}>
-                        <Text style={{color:'blue', textAlign:'center', marginTop:10}}>Pas de compte ? Inscrivez-vous</Text>
+                    <Pressable onPress={() => navigation.navigate('Inscription')}>
+                        <Text style={{color:'green', textAlign:'center', marginTop:10}}>Pas de compte ? Inscrivez-vous</Text>
                     </Pressable>
                 </View>
 
